@@ -1,15 +1,102 @@
+"use client"
 import Navigation from '@/components/Navigation'
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+  const sectionOneRef = useRef(null)
+  const sectionTwoRef = useRef(null)
+
+  useEffect(() => {
+    if (!sectionOneRef.current || !sectionTwoRef.current) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        sectionOneRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionTwoRef.current,
+            start: 'top 100%', // when section two enters from bottom
+            end: 'top 50%',    // when its top hits middle of viewport
+            scrub: true,
+          },
+        }
+      )
+    })
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <div className='h-screen bg-white'>
+    <div className='min-h-screen bg-white'>
       <Navigation />
-      <main className="max-w-4xl mx-auto p-6">
-        <h1 className="text-4xl font-bold mb-4">Home Page</h1>
-        <p className="text-lg text-gray-600">
-          Welcome to the home page with hexagon transitions!
-        </p>
-      </main>
+
+      {/* Fade entire section including content */}
+      <section ref={sectionOneRef} className="relative h-screen w-full bg-white overflow-hidden">
+        {/* Background Video */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="https://www.pexels.com/download/video/4884233/" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Content Container */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-6 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="text-black">
+                <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                  Welcome to Our Amazing Platform
+                </h1>
+                <p className="text-xl lg:text-2xl mb-8 text-gray-600">
+                  Experience the future with cutting-edge technology and innovative solutions
+                </p>
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                  Get Started
+                </button>
+              </div>
+
+              <div className="relative">
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="w-full h-64 lg:h-80 object-cover rounded-lg shadow-2xl"
+                >
+                  <source src="https://www.pexels.com/download/video/6177737/" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section Two drives the fade */}
+      <section ref={sectionTwoRef} className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-5xl font-bold leading-tight text-gray-800">
+            We create innovative digital experiences that transform businesses and empower teams to achieve extraordinary results through cutting-edge technology, creative design, and strategic partnerships that drive sustainable growth and lasting impact in today's competitive marketplace.
+          </p>
+        </div>
+      </section>
+
+      <section className="h-screen bg-gray-200 flex items-center">
+        <div className="max-w-6xl mx-auto px-6 text-center">hi</div>
+      </section>
     </div>
   )
 }
