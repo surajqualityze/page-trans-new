@@ -1,44 +1,32 @@
 "use client"
 import Navigation from '@/components/Navigation'
-import React, { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import React, { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function Home() {
   const sectionOneRef = useRef(null)
   const sectionTwoRef = useRef(null)
 
-  useEffect(() => {
-    if (!sectionOneRef.current || !sectionTwoRef.current) return
+  // Progress 0->1 as sectionTwo top moves from bottom to 50% of viewport
+  const { scrollYProgress: s2Progress } = useScroll({
+    target: sectionTwoRef,
+    offset: ['start 100%', 'start 50%'],
+  })
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        sectionOneRef.current,
-        { opacity: 1 },
-        {
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionTwoRef.current,
-            start: 'top 100%', // when section two enters from bottom
-            end: 'top 50%',    // when its top hits middle of viewport
-            scrub: true,
-          },
-        }
-      )
-    })
-
-    return () => ctx.revert()
-  }, [])
+  // Fade whole section to 0 (revealing white page background). If a solid white is needed above everything,
+  // add a white overlay behind content but inside the same motion container.
+  const sectionOpacity = useTransform(s2Progress, [0, 1], [1, 0])
 
   return (
     <div className='min-h-screen bg-white'>
       <Navigation />
 
       {/* Fade entire section including content */}
-      <section ref={sectionOneRef} className="relative h-screen w-full bg-white overflow-hidden">
+      <motion.section
+        ref={sectionOneRef}
+        className="relative h-screen w-full bg-white overflow-hidden"
+        style={{ opacity: sectionOpacity }}
+      >
         {/* Background Video */}
         <video 
           autoPlay 
@@ -83,9 +71,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Section Two drives the fade */}
+      {/* Section Two drives the fade timing */}
       <section ref={sectionTwoRef} className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <p className="text-5xl font-bold leading-tight text-gray-800">
