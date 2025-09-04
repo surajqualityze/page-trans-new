@@ -15,6 +15,9 @@ export default function Template({ children }) {
   
   useEffect(() => {
     if (isTransitioning && contentRef.current && blackHexRef.current) {
+      // Ensure we're at the top during transition
+      window.scrollTo(0, 0)
+      
       const tl = gsap.timeline({
         onComplete: () => setIsTransitioning(false)
       })
@@ -35,14 +38,12 @@ export default function Template({ children }) {
         75% 56%, 25% 56%, 22% 50.5%, 0% 50.5%
       )`
       
-      // UPDATED: Increased both vertical expansion AND horizontal line thickness
       const step2ClipPath = `polygon(
         0% 45%, 22% 45%, 25% 35%, 75% 35%,
         78% 45%, 100% 45%, 100% 55%, 78% 55%,
         75% 65%, 25% 65%, 22% 55%, 0% 55%
       )`
       
-    
       const finalClipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
       
       // Set up both elements with initial clip-path
@@ -76,7 +77,6 @@ export default function Template({ children }) {
         clipPath: step2ClipPath
       })
       
-  
       // Step 4: Fill full screen - reveal everything
       .to(contentRef.current, {
         duration: 0.3,
@@ -97,7 +97,15 @@ export default function Template({ children }) {
         }}
       />
       
-      <div ref={contentRef} className="relative z-50">
+      <div 
+        ref={contentRef} 
+        className="relative z-50"
+        style={{
+          // Prevent scrolling during transition
+          overflow: isTransitioning ? 'hidden' : 'visible',
+          height: isTransitioning ? '100vh' : 'auto'
+        }}
+      >
         {children}
       </div>
     </div>

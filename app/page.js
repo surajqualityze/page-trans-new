@@ -1,22 +1,85 @@
 "use client"
 import Navigation from '@/components/Navigation'
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { gsap } from "gsap"
 
-export default function Home() {
+
+export default function Home({ isTransitioning, setIsTransitioning }) {
   const sectionOneRef = useRef(null)
   const sectionTwoRef = useRef(null)
+  const contentRef = useRef(null)
+  const blackHexRef = useRef(null)
 
-  // Progress 0->1 as sectionTwo top moves from bottom to 50% of viewport
+// Your existing scroll animations
   const { scrollYProgress: s2Progress } = useScroll({
     target: sectionTwoRef,
     offset: ['start 100%', 'start 50%'],
   })
-
-  // Fade whole section to 0 (revealing white page background). If a solid white is needed above everything,
-  // add a white overlay behind content but inside the same motion container.
   const sectionOpacity = useTransform(s2Progress, [0, 1], [1, 0])
 
+  // Handle transition animation
+  useEffect(() => {
+    if (isTransitioning && contentRef.current && blackHexRef.current) {
+      const tl = gsap.timeline({
+        onComplete: () => setIsTransitioning(false)
+      })
+      
+      // Your existing animation code here...
+      gsap.set(contentRef.current, { opacity: 0 })
+      
+      const initialClipPath = `polygon(
+        22% 49.5%, 22% 49.5%, 25% 44%, 75% 44%,
+        78% 49.5%, 78% 49.5%, 78% 50.5%, 78% 50.5%,
+        75% 56%, 25% 56%, 22% 50.5%, 22% 50.5%
+      )`
+      
+      const step1ClipPath = `polygon(
+        0% 49.5%, 22% 49.5%, 25% 44%, 75% 44%,
+        78% 49.5%, 100% 49.5%, 100% 50.5%, 78% 50.5%,
+        75% 56%, 25% 56%, 22% 50.5%, 0% 50.5%
+      )`
+      
+      const step2ClipPath = `polygon(
+        0% 45%, 22% 45%, 25% 35%, 75% 35%,
+        78% 45%, 100% 45%, 100% 55%, 78% 55%,
+        75% 65%, 25% 65%, 22% 55%, 0% 55%
+      )`
+      
+      const finalClipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+      
+      gsap.set([contentRef.current, blackHexRef.current], {
+        clipPath: initialClipPath
+      })
+      
+      tl.to([contentRef.current, blackHexRef.current], {
+        duration: 1,
+        ease: "power2.out",
+        clipPath: step1ClipPath
+      })
+      .to(blackHexRef.current, {
+        duration: 0.2,
+        ease: "power2.out",
+        opacity: 0
+      })
+      .to(contentRef.current, {
+        duration: 0.1,
+        ease: "power2.out",
+        opacity: 1
+      }, "<")
+      .to(contentRef.current, {
+        duration: 0.3,
+        ease: "power2.inOut",
+        clipPath: step2ClipPath
+      })
+      .to(contentRef.current, {
+        duration: 0.3,
+        ease: "power2.inOut",
+        clipPath: finalClipPath
+      })
+    }
+  }, [isTransitioning, setIsTransitioning])
+  
   return (
     <div className='min-h-screen bg-white'>
       <Navigation />
@@ -27,6 +90,22 @@ export default function Home() {
         className="relative h-screen w-full bg-white overflow-hidden"
         style={{ opacity: sectionOpacity }}
       >
+
+         {/* Transition overlays scoped to this section */}
+        {isTransitioning && (
+          <>
+            <div
+              ref={blackHexRef}
+              className="absolute inset-0 bg-black/30 z-40"
+            />
+            <div
+              ref={contentRef}
+              className="absolute inset-0 z-50 pointer-events-none"
+            />
+          </>
+        )}
+
+        
         {/* Background Video */}
         <video 
           autoPlay 
