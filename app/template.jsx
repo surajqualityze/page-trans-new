@@ -1,4 +1,3 @@
-// template.jsx
 "use client"
 import { usePageTransition } from '@/hooks/usePageTransition'
 
@@ -7,7 +6,7 @@ export default function Template({ children }) {
   
   return (
     <div className="relative min-h-screen">
-      {/* Black hexagon background - the shape overlay */}
+      {/* Hexagon overlay */}
       <div
         ref={blackHexRef}
         className="fixed inset-0 bg-black/30 z-40"
@@ -16,7 +15,7 @@ export default function Template({ children }) {
         }}
       />
       
-      {/* Content container with clip-path animation */}
+      {/* Content container */}
       <div 
         ref={contentRef} 
         className="relative z-50"

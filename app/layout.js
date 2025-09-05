@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ViewTransitions } from "next-view-transitions";
+import LoadingScreen from "@/components/LoadingScreen"; // ✅ new
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +24,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       <ViewTransitions>{children}</ViewTransitions>
+        {/* ✅ First load splash + normal transitions */}
+        <LoadingScreen>
+          <ViewTransitions>{children}</ViewTransitions>
+        </LoadingScreen>
       </body>
     </html>
   );
