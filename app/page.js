@@ -1,15 +1,16 @@
 // page.jsx
-"use client"
-import Navigation from '@/components/Navigation'
-import React, { useRef, useMemo } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+"use client";
+import Navigation from "@/components/Navigation";
+import React, { useRef, useMemo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import HomeSecondSection from "@/components/HomeSecondSection";
 
 // Memoized video component
 const OptimizedVideo = React.memo(({ src, className, ...props }) => (
-  <video 
-    autoPlay 
-    loop 
-    muted 
+  <video
+    autoPlay
+    loop
+    muted
     playsInline
     preload="metadata"
     className={className}
@@ -18,32 +19,39 @@ const OptimizedVideo = React.memo(({ src, className, ...props }) => (
     <source src={src} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-))
+));
 
-OptimizedVideo.displayName = 'OptimizedVideo'
+OptimizedVideo.displayName = "OptimizedVideo";
 
 export default function Home() {
-  const sectionOneRef = useRef(null)
-  const sectionTwoRef = useRef(null)
+  const sectionOneRef = useRef(null);
+  const sectionTwoRef = useRef(null);
 
   // Memoize scroll configuration
-  const scrollConfig = useMemo(() => ({
-    target: sectionTwoRef,
-    offset: ['start 100%', 'start 50%']
-  }), [])
+  const scrollConfig = useMemo(
+    () => ({
+      target: sectionTwoRef,
+      offset: ["start 100%", "start 30%"],
+    }),
+    []
+  );
 
-  const { scrollYProgress: s2Progress } = useScroll(scrollConfig)
-  const sectionOpacity = useTransform(s2Progress, [0, 1], [1, 0])
+  const { scrollYProgress: s2Progress } = useScroll(scrollConfig);
+  const sectionOpacity = useTransform(s2Progress, [0, 1], [1, 0]);
 
   // Memoized content
-  const heroContent = useMemo(() => ({
-    title: "Welcome to Our Amazing Platform",
-    subtitle: "Experience the future with cutting-edge technology and innovative solutions",
-    buttonText: "Get Started"
-  }), [])
-  
+  const heroContent = useMemo(
+    () => ({
+      title: "Welcome to Our Amazing Platform",
+      subtitle:
+        "Experience the future with cutting-edge technology and innovative solutions",
+      buttonText: "Get Started",
+    }),
+    []
+  );
+
   return (
-    <div className='min-h-screen bg-white'>
+    <div className="min-h-screen bg-white">
       <Navigation />
 
       {/* Hero Section - Fade entire section including content */}
@@ -53,7 +61,7 @@ export default function Home() {
         style={{ opacity: sectionOpacity }}
       >
         {/* Background Video */}
-        <OptimizedVideo 
+        <OptimizedVideo
           src="https://www.pexels.com/download/video/4884233/"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
@@ -75,7 +83,7 @@ export default function Home() {
               </div>
 
               <div className="relative">
-                <OptimizedVideo 
+                <OptimizedVideo
                   src="https://www.pexels.com/download/video/6177737/"
                   className="w-full h-64 lg:h-80 object-cover rounded-lg shadow-2xl"
                 />
@@ -85,18 +93,20 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Section Two drives the fade timing */}
-      <section ref={sectionTwoRef} className="py-20 bg-gray-50">
+      {/* Section Two */}
+      <div ref={sectionTwoRef}>
+        <HomeSecondSection />
+      </div>
+
+      {/* Third Section */}
+      <section className="h-screen bg-gray-200 flex items-center relative z-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-5xl font-bold leading-tight text-gray-800">
-            We create innovative digital experiences that transform businesses and empower teams to achieve extraordinary results through cutting-edge technology, creative design, and strategic partnerships that drive sustainable growth and lasting impact in today's competitive marketplace.
+          <h2 className="text-4xl font-bold text-gray-800">Next Section</h2>
+          <p className="text-xl text-gray-600 mt-4">
+            This section appears after the text animation completes
           </p>
         </div>
       </section>
-
-      <section className="h-screen bg-gray-200 flex items-center">
-        <div className="max-w-6xl mx-auto px-6 text-center">hi</div>
-      </section>
     </div>
-  )
+  );
 }
