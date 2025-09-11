@@ -78,29 +78,29 @@ export const usePageTransition = () => {
         opacity: 0
       })
       .to(contentRef.current, {
-        duration: 0.1,
-        ease: "power2.out",
+        duration: 0.3,
+       ease: "power1.inOut",
         opacity: 1
       }, "<")
       .to(contentRef.current, {
-        duration: 0.3,
-        ease: "power2.inOut",
+         duration: 0.3,
+       ease: "power1.inOut",
         clipPath: clipPaths.step2
       })
        .to(contentRef.current, {
-        duration: 0.3,
-        ease: "power2.inOut",
-        clipPath: clipPaths.step3
+       duration: 0.2,
+      ease: "power1.inOut",
+      clipPath: clipPaths.step3
       })
        .to(contentRef.current, {
-        duration: 0.4,
-        ease: "power2.inOut",
-        clipPath: clipPaths.step4
+       duration: 0.1,
+      ease: "power1.inOut",
+      clipPath: clipPaths.step4
       })
       .to(contentRef.current, {
-        duration: 0.2,
-        ease: "power2.inOut",
-        clipPath: clipPaths.final
+         duration: 0.1,
+      ease: "power1.inOut",
+      clipPath: clipPaths.final
       })
   }
   

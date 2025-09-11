@@ -118,6 +118,18 @@ export default function HomeSecondSection() {
           ))}
         </motion.div>
       </div>
+      <p>
+        Discover how a cloud-based EQMS can streamline compliance, accelerate production, and ensure the highest standards for gene therapoes, and other groundbreaking innovations. Don't let outdated systems gols back your scientific breakthroughs. From GMP to ICH guideliness, managing biotech quality has neverbeen easier. Experience how a modern EQMS can simply traceability, mitigate risks, and keep your lab, production, and compliance teams in sync-all while boosting efficiency.
+      </p>
+
+      <p>
+        Biotechnology is at the forefront of solving humaity's greatest challenges, but with groundbreaking innovation comes unparalleled complexity. Managing sensitive biologic products, adhering to multifaceted regulatory requirements, and ensuring process integrity demand more than traditional system can offer. Qualityze EQMS Solution empower you with intelligent, cloud-based solutions for quality, safety, and compliance. Our platform integrates seamlessly with your processes to optimize batch consistency, validate workflows, and navigate global regulatory demands-all while enabling real-time visibility and proactibe decision-making. With Qualityze, you'll harness the power of digital transformation to deliver safer, more effective products faster.
+      </p>
+
+      <p>
+        The cannabis indstry is transforming, and so are the 
+      </p>
+
     </section>
   )
 }
