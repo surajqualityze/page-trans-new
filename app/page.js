@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import React, { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import HomeSecondSection from "@/components/HomeSecondSection";
+import OurStory from "@/components/OurStory";
 
 // Memoized video component
 const OptimizedVideo = React.memo(({ src, className, ...props }) => (
@@ -106,6 +107,10 @@ export default function Home() {
             This section appears after the text animation completes
           </p>
         </div>
+      </section>
+
+      <section>
+        <OurStory />
       </section>
     </div>
   );
