@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 const gradients = [
-  "linear-gradient(90deg, #007cf0, #00dfd8)",  // Design
+  "linear-gradient(90deg, #007cf0, #00dfd8)", // Design
   "linear-gradient(90deg, #7928ca, #ff0080)", // Build
   "linear-gradient(90deg, #ff4d4d, #f9cb28)", // Market
 ];
@@ -12,8 +12,11 @@ const gradients = [
 export default function DesignBuildMarket() {
   const refs = [useRef(null), useRef(null), useRef(null)];
 
+  const transitionDuration = 0.8;
+  const pauseBetween = 0.5;
+
   useEffect(() => {
-    const timeline = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+    const timeline = gsap.timeline({ repeat: -1, repeatDelay: pauseBetween });
 
     refs.forEach((ref, i) => {
       timeline
@@ -21,20 +24,23 @@ export default function DesignBuildMarket() {
           webkitBackgroundClip: "text",
           webkitTextFillColor: "transparent",
           backgroundImage: gradients[i],
-          duration: 0.8,
+          duration: transitionDuration,
           ease: "power1.inOut",
         })
-        .to(ref.current, {
-          webkitTextFillColor: "white",
-          duration: 0.8,
-          ease: "power1.inOut",
-        }, "+=1");
+        .to(
+          ref.current,
+          {
+            webkitTextFillColor: "white",
+            duration: transitionDuration,
+            ease: "power1.inOut",
+          },
+          `+=${pauseBetween}`
+        );
     });
   }, []);
 
   return (
     <section className="relative w-full h-screen bg-black text-white flex flex-col justify-center items-center px-6 text-center overflow-hidden">
-
       <h1 className="text-5xl md:text-8xl  flex space-x-6">
         {["Design.", "Build.", "Market."].map((word, idx) => (
           <span key={idx} ref={refs[idx]}>
@@ -44,7 +50,9 @@ export default function DesignBuildMarket() {
       </h1>
 
       <p className="mt-6 max-w-2xl mx-auto text-lg leading-relaxed text-gray-300">
-        It’s in Webandcrafts’ DNA to transform your brand into its best digital self. We are driven by a customer-centric approach in creating engaging, interactive and immersive experiences that deliver only the best.
+        It’s in Webandcrafts’ DNA to transform your brand into its best digital
+        self. We are driven by a customer-centric approach in creating engaging,
+        interactive and immersive experiences that deliver only the best.
       </p>
 
       <a
