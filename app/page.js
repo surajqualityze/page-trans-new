@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import HomeSecondSection from "@/components/HomeSecondSection";
 import OurStory from "@/components/OurStory";
 import DesignBuildMarket from "@/components/DesignBuildMarket";
+import OurImpact from "@/components/OurImpact";
 
 // Memoized video component
 const OptimizedVideo = React.memo(({ src, className, ...props }) => (
@@ -115,6 +116,9 @@ export default function Home() {
       </section>
       <section>
         <DesignBuildMarket />
+      </section>
+      <section>
+        <OurImpact />
       </section>
     </div>
   );
