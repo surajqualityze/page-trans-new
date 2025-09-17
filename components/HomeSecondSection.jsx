@@ -24,21 +24,27 @@ export default function HomeSecondSection() {
     const isInCenter = Math.abs(sectionCenter - viewportCenter) < 100
     
     setIsCentered(isInCenter)
-  }, [])
+
+    // Reset animation if section is far from center (scrolled away)
+    if (!isInCenter && rect.top > viewportHeight * 0.8) {
+      // Section is below viewport, reset animation
+      setAnimationStarted(false)
+      setAnimationDone(false)
+      controls.set("hidden")
+    }
+  }, [controls])
 
   // Set up scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      if (!animationStarted) {
-        checkIfCentered()
-      }
+      checkIfCentered()
     }
 
     window.addEventListener('scroll', handleScroll)
     checkIfCentered() // Check on mount
 
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [checkIfCentered, animationStarted])
+  }, [checkIfCentered])
 
   // Lock/unlock scroll based on animation state
   useEffect(() => {
@@ -81,7 +87,7 @@ export default function HomeSecondSection() {
   const letterVariants = {
     hidden: { 
       color: "#9ca3af",
-      transition: { duration: 0 }
+      transition: { duration: 0 } // Instant reset to gray
     },
     visible: { 
       color: "#000000", 
@@ -95,7 +101,7 @@ export default function HomeSecondSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-20 bg-gray-50 flex items-center min-h-screen sticky top-0 z-30"
+      className="py-20 bg-white flex items-center h-screen sticky top-0 z-30"
     >
       <div className="max-w-6xl mx-auto px-6 text-center">
         <motion.div
@@ -118,18 +124,6 @@ export default function HomeSecondSection() {
           ))}
         </motion.div>
       </div>
-      <p>
-        Discover how a cloud-based EQMS can streamline compliance, accelerate production, and ensure the highest standards for gene therapoes, and other groundbreaking innovations. Don't let outdated systems gols back your scientific breakthroughs. From GMP to ICH guideliness, managing biotech quality has neverbeen easier. Experience how a modern EQMS can simply traceability, mitigate risks, and keep your lab, production, and compliance teams in sync-all while boosting efficiency.
-      </p>
-
-      <p>
-        Biotechnology is at the forefront of solving humaity's greatest challenges, but with groundbreaking innovation comes unparalleled complexity. Managing sensitive biologic products, adhering to multifaceted regulatory requirements, and ensuring process integrity demand more than traditional system can offer. Qualityze EQMS Solution empower you with intelligent, cloud-based solutions for quality, safety, and compliance. Our platform integrates seamlessly with your processes to optimize batch consistency, validate workflows, and navigate global regulatory demands-all while enabling real-time visibility and proactibe decision-making. With Qualityze, you'll harness the power of digital transformation to deliver safer, more effective products faster.
-      </p>
-
-      <p>
-        The cannabis indstry is transforming, and so are the 
-      </p>
-
     </section>
   )
 }
